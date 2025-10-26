@@ -58,6 +58,32 @@ fail2ban::custom_jails:
 
 jupyterhub::kernel::install_method: venv
 jupyterhub::jupyterhub_config_hash:
+  SbatchForm:
+    account:
+      def: 'def-account'
+    runtime:
+      min: 1.0
+      def: 2.0
+      max: 5.0
+    nprocs:
+      min: 1
+      def: 8
+      max: 16
+    memory:
+      min: 2048
+      max: 8192
+    gpus:
+      def: 'gpu:0'
+      choices: ['gpu:0', 'gpu:k20:1', 'gpu:k80:1']
+    oversubscribe:
+      def: false
+      lock: true
+    ui:
+      def: 'lab'
+      choices: ['lab', 'notebook', 'terminal', 'rstudio', 'code-server', 'desktop']
+    partition:
+      def: 'partition1'
+      choices: ['node', 'gpu']
   SlurmFormSpawner:
     ui_args:
       notebook:
