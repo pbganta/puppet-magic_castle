@@ -56,13 +56,34 @@ fail2ban::custom_jails:
     filter_includes: 'before = common.conf'
     filter_failregex: '^%(__prefix_line)spam_unix\(sshd:auth\):\s+authentication failure;\s*logname=\S*\s*uid=\d*\s*euid=\d*\s*tty=\S*\s*ruser=\S*\s*rhost=<HOST>\S*\s*user=(root|admin)\s.*$'
 
+jupyterhub::node::prefix: "/opt/jupyterhub_node"
+jupyterhub::node::config::jupyter_server_config: "%{alias('jupyterhub::jupyter_notebook_config_hash')}"
+jupyterhub::node::install_method: "venv"
+jupyterhub::node::install::python: "%{alias('jupyterhub::python3::version')}"
+jupyterhub::node::install::packages:
+  - ase
+  - numpy
+  - scipy
+  - matplotlib
+
 jupyterhub::kernel::install_method: venv
+jupyterhub::kernel::venv::prefix: "/opt/ipython_kernel"
+jupyterhub::kernel::venv::python: "%{alias('jupyterhub::python3::version')}"
+jupyterhub::kernel::venv::display_name: "Python 3(MM)"
+jupyterhub::kernel::venv::kernel_name: 'python3MM'
+jupyterhub::kernel::venv::packages:
+  - ase
+  - numpy
+  - scipy
+  - matplotlib
+
 jupyterhub::jupyterhub_config_hash:
   SlurmFormSpawner:
     ui_args:
       notebook:
         name: Jupyter Notebook
-        url: '/tree'
+        args: '/tree'
+        modules: ['ipython-kernel/3.11']
       lab:
         name: JupyterLab
       terminal:
@@ -84,14 +105,14 @@ jupyterhub::jupyterhub_config_hash:
       max: 5.0
     nprocs:
       min: 1
-      def: 8
-      max: 16
+      def: 20
+      max: 20
     memory:
-      min: 2048
+      min: 6144
       max: 8192
     gpus:
       def: 'gpu:0'
-      choices: ['gpu:0']
+      choices: ['gpu:0', 'gpu:1']
     oversubscribe:
       def: false
       lock: false
@@ -101,7 +122,6 @@ jupyterhub::jupyterhub_config_hash:
     partition:
       def: 'partition1'
       choices: ['cpu-node', 'gpu-node']
-
 
 selinux::mode: 'permissive'
 # selinux::type: 'targeted'
