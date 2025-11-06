@@ -100,7 +100,7 @@ jupyterhub::jupyterhub_config_hash:
       choices: ['notebook', 'lab', 'terminal', 'code-server', 'desktop']
       def: 'lab'
     partition:
-      def: 'partition1'
+      def: 'cpu-node'
       choices: ['cpu-node', 'gpu-node']
 
 selinux::mode: 'permissive'
