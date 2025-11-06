@@ -82,8 +82,7 @@ jupyterhub::jupyterhub_config_hash:
     ui_args:
       notebook:
         name: Jupyter Notebook
-        args: '/tree'
-        modules: ['ipython-kernel/3.11']
+        url: '/tree'
       lab:
         name: JupyterLab
       terminal:
@@ -98,14 +97,17 @@ jupyterhub::jupyterhub_config_hash:
       desktop:
         name: Desktop
         url: '/Desktop'
+
   SbatchForm:
+    account:
+      def: 'def-account'
     runtime:
       min: 1.0
       def: 2.0
       max: 5.0
     nprocs:
       min: 1
-      def: 20
+      def: 8
       max: 20
     memory:
       min: 6144
