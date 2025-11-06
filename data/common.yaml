@@ -56,27 +56,8 @@ fail2ban::custom_jails:
     filter_includes: 'before = common.conf'
     filter_failregex: '^%(__prefix_line)spam_unix\(sshd:auth\):\s+authentication failure;\s*logname=\S*\s*uid=\d*\s*euid=\d*\s*tty=\S*\s*ruser=\S*\s*rhost=<HOST>\S*\s*user=(root|admin)\s.*$'
 
-jupyterhub::node::prefix: "/opt/jupyterhub_node"
-jupyterhub::node::config::jupyter_server_config: "%{alias('jupyterhub::jupyter_notebook_config_hash')}"
-jupyterhub::node::install_method: "venv"
-jupyterhub::node::install::python: "%{alias('jupyterhub::python3::version')}"
-jupyterhub::node::install::packages:
-  - ase
-  - numpy
-  - scipy
-  - matplotlib
 
 jupyterhub::kernel::install_method: venv
-jupyterhub::kernel::venv::prefix: "/opt/ipython_kernel"
-jupyterhub::kernel::venv::python: "%{alias('jupyterhub::python3::version')}"
-jupyterhub::kernel::venv::display_name: "Python 3(MM)"
-jupyterhub::kernel::venv::kernel_name: 'python3MM'
-jupyterhub::kernel::venv::packages:
-  - ase
-  - numpy
-  - scipy
-  - matplotlib
-
 jupyterhub::jupyterhub_config_hash:
   SlurmFormSpawner:
     ui_args:
@@ -97,10 +78,7 @@ jupyterhub::jupyterhub_config_hash:
       desktop:
         name: Desktop
         url: '/Desktop'
-
   SbatchForm:
-    account:
-      def: 'def-account'
     runtime:
       min: 1.0
       def: 2.0
@@ -139,7 +117,6 @@ swap_file::files:
     ensure: "present"
     swapfile: "/mnt/swap"
     swapfilesize: "1 GB"
-
 
 mysql::server::remove_default_accounts: true
 mysql::server::override_options:
